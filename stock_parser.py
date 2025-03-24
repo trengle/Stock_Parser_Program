@@ -16,7 +16,8 @@ and that the stocks.csv in located in that folder.
 #sets the default path to the user's Desktop
 desktopPath=os.path.join(os.path.expanduser("~"),'Desktop')
 #sets cwd to the Stock_Parser folder
-os.chdir(os.path.join(desktopPath,"Stock_Parser"))
+workingDir=os.path.join(desktopPath,"Stock_Parser")
+os.chdir(workingDir)
 
 # create an app that processes files(stock info) provided by a client.  
 # create a directory of folders and files to organize the information.  
@@ -45,19 +46,26 @@ with open("stocks.csv") as file:
 # Find the sector.
 for stock in rowList:
 # Create a folder named after the sector.  
+    os.chdir(workingDir)
     os.makedirs(rf'{stock['sector']}', exist_ok=True)
     # Create a .txt file for the stock name ie:  'apple'.  If there is a file with that 
+    path = os.path.join(workingDir,stock['sector'])  
+    os.chdir(path)
     # stock name that already exists then you can skip it.  
     if os.path.exists(f'{stock['name']}.txt'):
         continue
+    with open(rf'{stock['name']}.txt', "w") as file:
+        print(file)
+
+    
     # For each column of the stock add a row to the .txt file with the following information:
 #   todays date in the following format 
 # MM-DD-YY, Share Price, Dividend, PE. $$ the first column is the ID, 2nd is stock name, 3rd column is stock symbol, 4th share price (needed), 5th column is the category, 6th column is the dividend, 7th is the PE, 8th column is next earnings date, final column is ...ignore for now, is it a blue chip stock.
 #    - Before adding this, update the log file with a line 'Adding row for <Stock Name>'.
     
 
-    with open(f'{stock['name']}.txt', 'w') as file:
-        file.write(f'MM-DD-YY, {stock['price']}, {stock['dividend']}, {stock['pe']}')
-        print(f'Adding row for {stock['name']}')
+    # with open(f'{stock['name']}.txt', 'w') as file:
+    #     file.write(f'MM-DD-YY, {stock['price']}, {stock['dividend']}, {stock['pe']}')
+        # print(f'Adding row for {stock['name']}')
     
 #    - After adding this update the log file with '<Stock Name> added!'.

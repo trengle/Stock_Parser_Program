@@ -47,12 +47,17 @@ for stock in rowList:
 # Create a folder named after the sector.  
     os.makedirs(rf'{stock['sector']}', exist_ok=True)
     # Create a .txt file for the stock name ie:  'apple'.  If there is a file with that 
-    with open(f'{stock['name']}.txt', 'w') as file:
-        file.write(f'MM-DD-YY, {stock['price']}, {stock['dividend']}, {stock['pe']}')
     # stock name that already exists then you can skip it.  
-
-# For each column of the stock add a row to the .txt file with the following information:
+    if os.path.exists(f'{stock['name']}.txt'):
+        continue
+    # For each column of the stock add a row to the .txt file with the following information:
 #   todays date in the following format 
 # MM-DD-YY, Share Price, Dividend, PE. $$ the first column is the ID, 2nd is stock name, 3rd column is stock symbol, 4th share price (needed), 5th column is the category, 6th column is the dividend, 7th is the PE, 8th column is next earnings date, final column is ...ignore for now, is it a blue chip stock.
 #    - Before adding this, update the log file with a line 'Adding row for <Stock Name>'.
+    
+
+    with open(f'{stock['name']}.txt', 'w') as file:
+        file.write(f'MM-DD-YY, {stock['price']}, {stock['dividend']}, {stock['pe']}')
+        print(f'Adding row for {stock['name']}')
+    
 #    - After adding this update the log file with '<Stock Name> added!'.
